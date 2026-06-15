@@ -1,13 +1,21 @@
 // CustomAlert.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import './CustomAlert.css';
 
-function CustomAlert({ message, onClose }) {
+function CustomAlert({ message, onClose, duration = 2500 }) {
+  // duration(ms) 후 자동으로 닫힘
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, duration);
+    return () => clearTimeout(timer);
+  }, [message, duration, onClose]);
+
   return (
     <div className="alert-box">
       <span className="alert-text">{message}</span>
-      <button className="alert-confirm-btn" onClick={onClose}>확인</button>
     </div>
   );
 }
+
 export default CustomAlert;

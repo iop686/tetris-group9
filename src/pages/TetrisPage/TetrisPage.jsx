@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import GameDisplay from '../../components/tetris/GameDisplay/GameDisplay';
 import AdBanner from '../../components/ui/AdBanner/AdBanner';
 import useTetrisEngine from '../../engine/useTetrisEngine';
@@ -12,9 +12,13 @@ const DEFAULT_KEYMAP = {
   drop: 'Space',
 };
 
-function TetrisPage({ currentUser, openAuthModal, showAlert, settings = {}, isGuest }) {
+function TetrisPage({ currentUser, showAlert, settings = {} }) {
   const canvasRef = useRef(null);
-  const nextCanvasRefs = useRef([useRef(null), useRef(null), useRef(null), useRef(null)]).current;
+  const ref0 = useRef(null);
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+  const nextCanvasRefs = useMemo(() => [ref0, ref1, ref2, ref3], []);
 
   const keymap = settings.keymap || DEFAULT_KEYMAP;
 
@@ -99,6 +103,7 @@ function TetrisPage({ currentUser, openAuthModal, showAlert, settings = {}, isGu
           overlaySub={overlaySub}
           overlayBtnText={overlayBtnText}
           onOverlayClick={isPaused ? togglePause : startGame}
+          showShare={gameOver && gameStarted}
         />
       </div>
 

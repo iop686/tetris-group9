@@ -59,6 +59,13 @@
   cursor: pointer;
 }
 
+/* 카카오 공유 버튼 */
+.game-overlay .share-btn {
+  background-color: #fee500;
+  color: #191600;
+  margin-top: 10px;
+}
+
 /* 오른쪽 정보 패널 */
 .game-info-panel {
   display: flex;

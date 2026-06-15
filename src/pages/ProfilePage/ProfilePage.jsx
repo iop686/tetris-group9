@@ -8,6 +8,11 @@ function isValidPassword(pw) {
   return pw.length >= 8 && hasLetter && hasNumber;
 }
 
+// DiceBear 아바타 URL
+function diceBearUrl(seed) {
+  return `https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(seed)}`;
+}
+
 function ProfilePage({ currentUser, kakaoProfile, isGuest, onBack, showAlert, onSignup }) {
   const [currentPw, setCurrentPw] = useState('');
   const [newPw, setNewPw] = useState('');
@@ -52,6 +57,21 @@ function ProfilePage({ currentUser, kakaoProfile, isGuest, onBack, showAlert, on
       <div className="profile-content">
         <button className="back-btn" onClick={onBack}>← 뒤로</button>
         <h2 className="profile-title">프로필</h2>
+
+        <div className="profile-avatar-area">
+          {kakaoProfile && kakaoProfile.profileImage ? (
+            <img className="profile-avatar" src={kakaoProfile.profileImage} alt="profile" />
+          ) : (
+            <img
+              className="profile-avatar"
+              src={diceBearUrl(isGuest ? currentUser : currentUser)}
+              alt="avatar"
+            />
+          )}
+          <p className="profile-avatar-name">
+            {kakaoProfile ? kakaoProfile.nickname : currentUser}
+          </p>
+        </div>
 
         <section className="profile-section">
           <h3>계정 정보</h3>

@@ -1,12 +1,13 @@
-// components/GameDisplay/GameDisplay.jsx
-import React, { useRef } from 'react';
+import React from 'react';
 import NextPreview from '../NextPreview/NextPreview';
+import { kakaoShareScore } from '../../../utils/kakao';
 import './GameDisplay.css';
 
 function GameDisplay({
   canvasRef, nextCanvasRefs,
   score, lines, level, highScore,
-  showOverlay, overlayTitle, overlaySub, overlayBtnText, onOverlayClick
+  showOverlay, overlayTitle, overlaySub, overlayBtnText, onOverlayClick,
+  showShare
 }) {
   return (
     <div className="game-display">
@@ -18,6 +19,11 @@ function GameDisplay({
             <h2>{overlayTitle}</h2>
             <p>{overlaySub}</p>
             <button onClick={onOverlayClick}>{overlayBtnText}</button>
+            {showShare && (
+              <button className="share-btn" onClick={() => kakaoShareScore(score)}>
+                💬 점수 공유하기
+              </button>
+            )}
           </div>
         )}
       </div>

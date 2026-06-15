@@ -42,3 +42,36 @@ export function kakaoLogout() {
     }
   });
 }
+
+// 카카오 공유하기 (게임 점수 자랑)
+export function kakaoShareScore(score) {
+  if (!window.Kakao || !window.Kakao.Share) {
+    alert('카카오 공유 기능을 사용할 수 없습니다.');
+    return;
+  }
+
+  // 배포 주소 우선, 없으면 현재 주소
+  const siteUrl = import.meta.env.VITE_SITE_URL || window.location.origin;
+
+  window.Kakao.Share.sendDefault({
+    objectType: 'feed',
+    content: {
+      title: 'TETRis 점수 자랑',
+      description: `내 최고 점수는 ${score}점! 당신도 도전해보세요 🎮`,
+      imageUrl: `${siteUrl}/favicon.svg`,
+      link: {
+        mobileWebUrl: siteUrl,
+        webUrl: siteUrl,
+      },
+    },
+    buttons: [
+      {
+        title: '게임하러 가기',
+        link: {
+          mobileWebUrl: siteUrl,
+          webUrl: siteUrl,
+        },
+      },
+    ],
+  });
+}
