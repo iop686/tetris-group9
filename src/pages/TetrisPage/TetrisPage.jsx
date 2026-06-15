@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import GameDisplay from '../../components/tetris/GameDisplay/GameDisplay';
 import AdBanner from '../../components/ui/AdBanner/AdBanner';
 import useTetrisEngine from '../../engine/useTetrisEngine';
@@ -17,6 +17,19 @@ function TetrisPage({ currentUser, openAuthModal, showAlert, settings = {}, isGu
   const nextCanvasRefs = useRef([useRef(null), useRef(null), useRef(null), useRef(null)]).current;
 
   const keymap = settings.keymap || DEFAULT_KEYMAP;
+
+  // 화면 폭에 따라 광고 방향 전환 (880px 기준)
+  const [adType, setAdType] = useState(
+    typeof window !== 'undefined' && window.innerWidth <= 880 ? 'horizontal' : 'vertical'
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setAdType(window.innerWidth <= 880 ? 'horizontal' : 'vertical');
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const {
     score, lines, level, highScore, gameOver, isPaused, gameStarted,
@@ -89,7 +102,7 @@ function TetrisPage({ currentUser, openAuthModal, showAlert, settings = {}, isGu
         />
       </div>
 
-      <AdBanner />
+      <AdBanner key={adType} type={adType} />
     </main>
   );
 }

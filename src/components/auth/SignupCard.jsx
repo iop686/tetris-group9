@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
 
+// 비밀번호: 영문 + 숫자 필수, 8자 이상
+function isValidPassword(pw) {
+  const hasLetter = /[a-zA-Z]/.test(pw);
+  const hasNumber = /[0-9]/.test(pw);
+  return pw.length >= 8 && hasLetter && hasNumber;
+}
+
 function SignupCard({ onSwitch, showAlert }) {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
@@ -15,15 +22,15 @@ function SignupCard({ onSwitch, showAlert }) {
       showAlert('회원가입 실패\n\n비밀번호를 입력해주세요.');
       return;
     }
-    if (pw.length < 8) {
-      showAlert('회원가입 실패\n\n비밀번호는 8자 이상이어야 합니다.');
+    if (!isValidPassword(pw)) {
+      showAlert('회원가입 실패\n\n비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다.');
       return;
     }
     if (!pw2) {
       showAlert('회원가입 실패\n\n비밀번호를 재입력해주세요.');
       return;
     }
-    if (pw != pw2) {
+    if (pw !== pw2) {
       showAlert('회원가입 실패\n\n비밀번호가 일치하지 않습니다.');
       return;
     }
@@ -41,15 +48,15 @@ function SignupCard({ onSwitch, showAlert }) {
       <h2>회원가입</h2>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-          <label>아이디 <span class="required-mark">*</span></label>
+          <label>아이디 <span className="required-mark">*</span></label>
           <input type="text" placeholder="아이디를 입력하세요" value={id} onChange={(e) => setId(e.target.value)} />
         </div>
         <div className="input-group">
-          <label>비밀번호 <span class="required-mark">*</span></label>
-          <input type="password" placeholder="8자 이상 입력" value={pw} onChange={(e) => setPw(e.target.value)} />
+          <label>비밀번호 <span className="required-mark">*</span></label>
+          <input type="password" placeholder="영문+숫자 포함 8자 이상" value={pw} onChange={(e) => setPw(e.target.value)} />
         </div>
         <div className="input-group">
-          <label>비밀번호 확인 <span class="required-mark">*</span></label>
+          <label>비밀번호 확인 <span className="required-mark">*</span></label>
           <input type="password" placeholder="비밀번호 재입력" value={pw2} onChange={(e) => setPw2(e.target.value)} />
         </div>
         <button type="submit" className="submit-btn">회원가입</button>

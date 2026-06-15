@@ -108,11 +108,11 @@ function RulePage({ onBack }) {
 
         <section className="rule-section">
           <h3>최고 기록</h3>
-          <p>로그인한 유저의 최고 점수는 자동으로 저장됩니다.<br />게스트 플레이 시 기록은 저장되지 않습니다.</p>
+          <p>로그인한 유저의 최고 점수는 자동으로 저장됩니다.<br />게스트 플레이 시 기록은 게스트 ID 기준으로 저장됩니다.</p>
         </section>
       </div>
 
-      <AdBanner />
+      <AdBanner type="horizontal" />
     </main>
   );
 }

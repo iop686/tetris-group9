@@ -9,6 +9,7 @@ import AboutPage from './pages/AboutPage/AboutPage';
 import PrivacyPage from './pages/PolicyPage/PrivacyPage';
 import TermsPage from './pages/PolicyPage/TermsPage';
 import SettingsPage from './pages/SettingsPage/SettingsPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
 import TetrisPage from './pages/TetrisPage/TetrisPage';
 import './App.css';
 
@@ -178,6 +179,7 @@ function App() {
         onLoginClick={() => openAuth('login')}
         onLogoClick={() => authed && goPage('menu')}
         onAboutClick={() => goPage('about')}
+        onProfileClick={() => authed && goPage('profile')}
       />
 
       {alertMessage && <CustomAlert message={alertMessage} onClose={closeAlert} />}
@@ -190,6 +192,15 @@ function App() {
         <AboutPage onBack={() => goPage('menu')} />
       ) : page === 'settings' ? (
         <SettingsPage settings={settings} onChange={updateSettings} onBack={() => goPage('menu')} />
+      ) : page === 'profile' ? (
+        <ProfilePage
+          currentUser={currentUser}
+          kakaoProfile={kakaoProfile}
+          isGuest={isGuest}
+          onBack={() => goPage('menu')}
+          showAlert={showAlert}
+          onSignup={() => openAuth('signup')}
+        />
       ) : page === 'privacy' ? (
         <PrivacyPage onBack={() => goPage('menu')} />
       ) : page === 'terms' ? (

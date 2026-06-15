@@ -20,8 +20,16 @@ const TECH_STACKS = [
     ]
   },
   {
+    category: '배포',
+    items: [
+      { name: 'Vercel', color: '#ffffff' },
+    ]
+  },
+  {
     category: '협업',
     items: [
+      { name: 'Git', color: '#f05032' },
+      { name: 'GitHub', color: '#ffffff' },
       { name: '카카오톡', color: '#fee500' },
     ]
   },
@@ -31,6 +39,13 @@ const MEMBERS = [
   { name: '이름', role: 'Frontend' },
   { name: '이름', role: 'Frontend' },
   { name: '이름', role: 'Frontend' },
+];
+
+const APIS = [
+  { name: '카카오 로그인', desc: '소셜 로그인 (JavaScript SDK)', color: '#fee500' },
+  { name: '카카오 AdFit', desc: '배너 광고 연동', color: '#fee500' },
+  { name: '카카오 공유하기', desc: '게임 점수 공유', color: '#fee500' },
+  { name: 'DiceBear', desc: '게스트 아바타 생성', color: '#a78bfa' },
 ];
 
 function AboutPage({ onBack }) {
@@ -59,6 +74,21 @@ function AboutPage({ onBack }) {
                       <span>{item.name}</span>
                     </div>
                   ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="about-section">
+          <h3>사용 API</h3>
+          <div className="api-list">
+            {APIS.map(api => (
+              <div key={api.name} className="api-card">
+                <div className="api-dot" style={{ backgroundColor: api.color }} />
+                <div className="api-info">
+                  <p className="api-name">{api.name}</p>
+                  <p className="api-desc">{api.desc}</p>
                 </div>
               </div>
             ))}

@@ -40,6 +40,17 @@ a:hover { color: #ffffff; }
   gap: 10px;
 }
 
+.avatar-wrap--clickable {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 10px;
+  transition: background-color 0.2s;
+}
+
+.avatar-wrap--clickable:hover {
+  background-color: #1c1c1e;
+}
+
 .avatar {
   width: 36px;
   height: 36px;

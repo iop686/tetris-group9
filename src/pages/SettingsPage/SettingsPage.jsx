@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AdBanner from '../../components/ui/AdBanner/AdBanner';
 import './SettingsPage.css';
 
 const DEFAULT_KEYMAP = {
@@ -117,6 +118,8 @@ function SettingsPage({ settings, onChange, onBack }) {
           <p className="settings-hint">변경할 키를 클릭한 뒤 원하는 키를 누르세요.</p>
         </section>
       </div>
+
+      <AdBanner type="horizontal" />
     </main>
   );
 }

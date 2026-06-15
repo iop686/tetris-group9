@@ -43,7 +43,7 @@ function LobbyPage({ onPlay, onRule, onSettings }) {
           </button>
         ))}
       </div>
-      <AdBanner />
+      <AdBanner type="horizontal" />
     </main>
   );
 }
