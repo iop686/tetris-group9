@@ -1,0 +1,104 @@
+/* display 박스 전체 */
+.game-display {
+  display: flex;
+  gap: 0;
+  background-color: #121214;
+  border: 1px solid #232326;
+  border-radius: 24px;
+  padding: 16px;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* 캔버스 영역 */
+.game-canvas-wrap {
+  position: relative;
+}
+
+#tetris-canvas {
+  background-color: #000000;
+  border: 2px solid #27272a;
+  display: block;
+}
+
+/* 오버레이 */
+.game-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 240px; height: 480px;
+  background-color: rgba(9, 9, 11, 0.92);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+
+.game-overlay h2 {
+  font-family: var(--font-orbitron);
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.game-overlay p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  white-space: pre-line;
+}
+
+.game-overlay button {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 10px 24px;
+  font-weight: 700;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+/* 오른쪽 정보 패널 */
+.game-info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 140px;
+}
+
+.info-section h3 {
+  font-family: var(--font-orbitron);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* 스탯 그리드 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.stat-box {
+  background-color: #1c1c1e;
+  border: 1px solid #2d2d30;
+  border-radius: 12px;
+  padding: 10px 6px;
+  text-align: center;
+}
+
+.stat-box label {
+  font-family: var(--font-orbitron);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+.stat-value {
+  font-family: var(--font-orbitron);
+  font-size: 1rem;
+  font-weight: 900;
+}

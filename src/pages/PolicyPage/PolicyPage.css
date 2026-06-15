@@ -1,0 +1,60 @@
+.policy-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
+.policy-content {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.policy-title {
+  font-family: var(--font-orbitron);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.1em;
+}
+
+.policy-date {
+  font-size: 0.75rem;
+  color: #52525b;
+  margin-top: -16px;
+}
+
+.policy-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #1c1c1e;
+}
+
+.policy-section:last-child {
+  border-bottom: none;
+}
+
+.policy-section h3 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.policy-section p,
+.policy-section li {
+  font-size: 0.85rem;
+  color: #71717a;
+  line-height: 1.8;
+}
+
+.policy-section ul {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

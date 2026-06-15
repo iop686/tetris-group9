@@ -1,0 +1,105 @@
+.home-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px;
+}
+
+/* 메뉴 리스트 */
+.home-menu-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 640px;
+  gap: 0;
+}
+
+/* 카드 */
+.home-menu-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  padding: 28px 32px;
+  background-color: #121214;
+  border: none;
+  border-bottom: 1px solid #232326;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s;
+  color: #ffffff;
+}
+
+.home-menu-card:first-child {
+  border-radius: 16px 16px 0 0;
+  border-top: 1px solid #232326;
+}
+
+.home-menu-card:last-child {
+  border-radius: 0 0 16px 16px;
+}
+
+.home-menu-card:hover {
+  background-color: color-mix(in srgb, var(--accent) 12%, #121214);
+}
+
+/* 아이콘 박스 */
+.card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background-color: color-mix(in srgb, var(--accent) 20%, #000);
+  color: var(--accent);
+  font-family: var(--font-orbitron);
+  font-size: 1.3rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+
+/* 텍스트 */
+.card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-label {
+  font-family: var(--font-orbitron);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.card-sub {
+  font-size: 0.8rem;
+  color: #71717a;
+  letter-spacing: 0.03em;
+}
+
+/* AdBanner는 하단 */
+.home-main > .ad-banner {
+  max-width: 640px;
+}
+
+@media (max-width: 640px) {
+  .home-menu-card {
+    padding: 20px 20px;
+    gap: 16px;
+  }
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
+  }
+  .card-label {
+    font-size: 1rem;
+  }
+}

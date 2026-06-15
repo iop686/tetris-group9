@@ -1,0 +1,36 @@
+footer {
+  padding: 24px 40px;
+  border-top: 1px solid #232326;
+  background-color: #0d0d0e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-links span {
+  font-size: 0.75rem;
+  color: #71717a;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-links span:hover {
+  color: #ffffff;
+}
+
+.footer-divider {
+  color: #3f3f46;
+  cursor: default !important;
+}
+
+.footer-copy {
+  font-size: 0.7rem;
+  color: #3f3f46;
+}

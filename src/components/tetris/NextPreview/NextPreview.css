@@ -1,0 +1,23 @@
+.next-preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.next-preview-box {
+  border: 1px solid #27272a;
+  background-color: #000000;
+  border-radius: 10px;
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.next-preview-box--small {
+  width: 72px;
+  height: 72px;
+  opacity: 0.6;
+}

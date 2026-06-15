@@ -1,0 +1,74 @@
+/* 전체 레이아웃: game-area 중앙 고정, 광고 오른쪽 absolute */
+.tetris-main-layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 40px;
+}
+
+/* game-area: 툴바 + display를 세로로 묶는 컨테이너 */
+.game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* display 위 툴바 */
+.game-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* GameDisplay 너비에 맞춤 */
+}
+
+.toolbar-right {
+  display: flex;
+  gap: 8px;
+}
+
+.toolbar-btn {
+  background-color: #242427;
+  color: #ffffff;
+  border: 1px solid #3f3f46;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.toolbar-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* 광고 배너: 오른쪽 absolute */
+.tetris-main-layout .ad-banner {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  width: 160px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* 화면이 좁아지면 광고 아래로 */
+@media (max-width: 880px) {
+  .tetris-main-layout .ad-banner {
+    position: static;
+    width: 100%;
+    max-width: 584px;
+    min-height: auto;
+    flex-direction: row;
+    margin-top: 24px;
+  }
+}

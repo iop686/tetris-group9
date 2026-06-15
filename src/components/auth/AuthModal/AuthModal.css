@@ -1,0 +1,63 @@
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.modal-content {
+  background-color: #121214; border: 1px solid #232326; border-radius: 24px;
+  width: 100%; max-width: 400px; padding: 32px; position: relative;
+}
+.modal-close-btn {
+  position: absolute; top: 20px; right: 20px;
+  background: none; border: none; color: var(--text-muted);
+  font-size: 1.5rem; cursor: pointer;
+}
+.auth-card h2 { font-family: var(--font-orbitron); font-size: 1.75rem; margin-bottom: 16px; }
+.input-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+.input-group label { font-size: 0.75rem; color: var(--text-muted); }
+.required-mark { color: #f43f5e; font-size: 0.7rem; }
+.input-group input { background-color: #1c1c1e; border: 1px solid #2d2d30; color: #ffffff; padding: 12px; border-radius: 8px; }
+.submit-btn { width: 100%; background-color: #ffffff; color: #000000; border: none; padding: 12px; font-weight: 700; border-radius: 8px; cursor: pointer; }
+.switch-mode-text { text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 16px; }
+.switch-mode-text span { color: #ffffff; text-decoration: underline; cursor: pointer; }
+
+/* 카카오 버튼 */
+.kakao-btn {
+  width: 100%;
+  margin-top: 16px;
+  background-color: #fee500;
+  border: none;
+  color: #191600;
+  padding: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+.kakao-btn:hover {
+  background-color: #f5dc00;
+}
+
+/* 게스트 버튼 */
+.guest-btn {
+  width: 100%;
+  margin-top: 12px;
+  background: none;
+  border: 1px solid #3f3f46;
+  color: #71717a;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.guest-btn:hover {
+  color: #ffffff;
+  border-color: #71717a;
+}

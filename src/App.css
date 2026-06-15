@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+:root {
+  --font-orbitron: 'Orbitron', sans-serif;
+  --font-main: 'Inter', 'Noto Sans KR', sans-serif;
+  --bg-color: #0d0d0e;
+  --panel-bg: #121214;
+  --border-color: #232326;
+  --text-main: #e4e4e7;
+  --text-muted: #a1a1aa;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+/* 공통 뒤로가기 버튼 */
+.back-btn {
+  align-self: flex-start;
+  background: none;
+  border: 1px solid #3f3f46;
+  color: #a1a1aa;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  margin-bottom: 8px;
+}
+.back-btn:hover {
+  color: #ffffff;
+  border-color: #71717a;
+}
