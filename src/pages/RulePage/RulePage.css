@@ -139,21 +139,3 @@
   font-size: 0.75rem !important;
   color: #52525b !important;
 }
-
-/* 뒤로가기 버튼 */
-.back-btn {
-  align-self: flex-start;
-  background: none;
-  border: 1px solid #3f3f46;
-  color: #a1a1aa;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.back-btn:hover {
-  color: #ffffff;
-  border-color: #71717a;
-}

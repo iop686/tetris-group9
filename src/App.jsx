@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/layout/Header/Header';
 import Footer from './components/layout/Footer/Footer';
 import CustomAlert from './components/ui/CustomAlert/CustomAlert';
@@ -11,6 +11,7 @@ import TermsPage from './pages/PolicyPage/TermsPage';
 import SettingsPage from './pages/SettingsPage/SettingsPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import TetrisPage from './pages/TetrisPage/TetrisPage';
+import { storage } from './utils/storage';
 import './App.css';
 
 const DEFAULT_SETTINGS = {
@@ -26,25 +27,10 @@ const DEFAULT_SETTINGS = {
 };
 
 function loadSettings() {
-  try {
-    const saved = localStorage.getItem('tetris_settings');
-    return saved ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) } : DEFAULT_SETTINGS;
-  } catch {
-    return DEFAULT_SETTINGS;
-  }
+  const saved = storage.getSettings();
+  return saved ? { ...DEFAULT_SETTINGS, ...saved } : DEFAULT_SETTINGS;
 }
 
-// 게스트 고유 ID 발급 (최초 1회, 이후 재사용)
-function getGuestId() {
-  let id = localStorage.getItem('tetris_guest_id');
-  if (!id) {
-    id = 'GUEST-' + Math.random().toString(36).slice(2, 8).toUpperCase();
-    localStorage.setItem('tetris_guest_id', id);
-  }
-  return id;
-}
-
-// 세션 상태 저장/복원 (새로고침 시 현재 페이지 유지)
 function loadSession() {
   try {
     const saved = sessionStorage.getItem('tetris_session');
@@ -61,19 +47,21 @@ function App() {
   const [isGuest, setIsGuest] = useState(session?.isGuest ?? false);
   const [guestId, setGuestId] = useState(session?.guestId ?? null);
   const [alertMessage, setAlertMessage] = useState('');
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(!session); // 세션 있으면 모달 안 띄움
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(!session);
   const [authMode, setAuthMode] = useState('login');
   const [page, setPage] = useState(session?.page ?? 'landing');
   const [settings, setSettings] = useState(loadSettings);
 
   const authed = page !== 'landing';
 
-  // 인증/페이지 상태가 바뀔 때마다 세션에 저장
+  // 세션 저장
   useEffect(() => {
     if (page === 'landing') {
       sessionStorage.removeItem('tetris_session');
     } else {
-      sessionStorage.setItem('tetris_session', JSON.stringify({ currentUser, kakaoProfile, isGuest, guestId, page }));
+      sessionStorage.setItem('tetris_session', JSON.stringify({
+        currentUser, kakaoProfile, isGuest, guestId, page,
+      }));
     }
   }, [currentUser, kakaoProfile, isGuest, guestId, page]);
 
@@ -82,7 +70,7 @@ function App() {
     window.history.pushState({ page: next }, '', `#${next}`);
   };
 
-  // 브라우저 뒤로/앞으로 가기 대응
+  // 브라우저 뒤로/앞으로 가기
   useEffect(() => {
     const handlePop = (e) => {
       const target = e.state?.page;
@@ -97,7 +85,7 @@ function App() {
 
   const updateSettings = (next) => {
     setSettings(next);
-    localStorage.setItem('tetris_settings', JSON.stringify(next));
+    storage.setSettings(next);
   };
 
   const openAuth = (mode = 'login') => {
@@ -105,53 +93,41 @@ function App() {
     setIsAuthModalOpen(true);
   };
 
-  const handleLoginSuccess = (user) => {
-    // 게스트 기록 이전 (게스트 고유 ID 키 기준)
+  // 게스트 → 회원 전환 시 최고기록 이전
+  const migrateGuestScore = (newUser) => {
     const gid = guestId || localStorage.getItem('tetris_guest_id');
-    if (gid) {
-      const guestHigh = parseInt(localStorage.getItem(`tetris_high_${gid}`) || '0', 10);
-      if (guestHigh > 0) {
-        const userHigh = parseInt(localStorage.getItem(`tetris_high_${user}`) || '0', 10);
-        if (guestHigh > userHigh) {
-          localStorage.setItem(`tetris_high_${user}`, guestHigh.toString());
-        }
-      }
+    if (!gid) return;
+    const guestHigh = storage.getHighScore(gid);
+    if (guestHigh > 0 && guestHigh > storage.getHighScore(newUser)) {
+      storage.setHighScore(newUser, guestHigh);
     }
+  };
+
+  const handleLoginSuccess = (user) => {
+    migrateGuestScore(user);
     setCurrentUser(user);
     setIsGuest(false);
     setGuestId(null);
     setIsAuthModalOpen(false);
     setPage('menu');
-    // landing 기록 제거: menu를 히스토리 시작점으로
     window.history.replaceState({ page: 'menu' }, '', '#menu');
   };
 
-  const handleGuest = () => {
-    const id = getGuestId();
-    setGuestId(id);
-    setIsGuest(true);
+  const handleKakao = (kakaoUser) => {
+    migrateGuestScore(kakaoUser.id);
+    setCurrentUser(kakaoUser.id);
+    setKakaoProfile(kakaoUser);
+    setIsGuest(false);
+    setGuestId(null);
     setIsAuthModalOpen(false);
     setPage('menu');
     window.history.replaceState({ page: 'menu' }, '', '#menu');
   };
 
-  // 카카오 로그인 성공
-  const handleKakao = (kakaoUser) => {
-    // 게스트 기록 이전
-    const gid = guestId || localStorage.getItem('tetris_guest_id');
-    if (gid) {
-      const guestHigh = parseInt(localStorage.getItem(`tetris_high_${gid}`) || '0', 10);
-      if (guestHigh > 0) {
-        const userHigh = parseInt(localStorage.getItem(`tetris_high_${kakaoUser.id}`) || '0', 10);
-        if (guestHigh > userHigh) {
-          localStorage.setItem(`tetris_high_${kakaoUser.id}`, guestHigh.toString());
-        }
-      }
-    }
-    setCurrentUser(kakaoUser.id);
-    setKakaoProfile(kakaoUser);
-    setIsGuest(false);
-    setGuestId(null);
+  const handleGuest = () => {
+    const id = storage.getGuestId();
+    setGuestId(id);
+    setIsGuest(true);
     setIsAuthModalOpen(false);
     setPage('menu');
     window.history.replaceState({ page: 'menu' }, '', '#menu');
@@ -166,6 +142,57 @@ function App() {
     setPage('landing');
     setIsAuthModalOpen(true);
     window.history.pushState({ page: 'landing' }, '', '#landing');
+  };
+
+  // 페이지 분기
+  const pageProps = {
+    onBack: () => goPage('menu'),
+  };
+
+  const renderPage = () => {
+    if (page === 'landing') return null;
+
+    switch (page) {
+      case 'play':
+        return (
+          <TetrisPage
+            key={currentUser || guestId}
+            currentUser={currentUser || guestId}
+            showAlert={showAlert}
+            settings={settings}
+          />
+        );
+      case 'rule':
+        return <RulePage {...pageProps} />;
+      case 'about':
+        return <AboutPage {...pageProps} />;
+      case 'settings':
+        return <SettingsPage settings={settings} onChange={updateSettings} {...pageProps} />;
+      case 'profile':
+        return (
+          <ProfilePage
+            currentUser={currentUser}
+            kakaoProfile={kakaoProfile}
+            isGuest={isGuest}
+            guestId={guestId}
+            showAlert={showAlert}
+            onSignup={() => openAuth('signup')}
+            {...pageProps}
+          />
+        );
+      case 'privacy':
+        return <PrivacyPage {...pageProps} />;
+      case 'terms':
+        return <TermsPage {...pageProps} />;
+      default:
+        return (
+          <LobbyPage
+            onPlay={() => goPage('play')}
+            onRule={() => goPage('rule')}
+            onSettings={() => goPage('settings')}
+          />
+        );
+    }
   };
 
   return (
@@ -184,34 +211,7 @@ function App() {
 
       {alertMessage && <CustomAlert message={alertMessage} onClose={closeAlert} />}
 
-      {page === 'landing' ? null : page === 'play' ? (
-        <TetrisPage currentUser={currentUser || guestId} openAuthModal={openAuth} showAlert={showAlert} settings={settings} isGuest={isGuest} />
-      ) : page === 'rule' ? (
-        <RulePage onBack={() => goPage('menu')} />
-      ) : page === 'about' ? (
-        <AboutPage onBack={() => goPage('menu')} />
-      ) : page === 'settings' ? (
-        <SettingsPage settings={settings} onChange={updateSettings} onBack={() => goPage('menu')} />
-      ) : page === 'profile' ? (
-        <ProfilePage
-          currentUser={currentUser}
-          kakaoProfile={kakaoProfile}
-          isGuest={isGuest}
-          onBack={() => goPage('menu')}
-          showAlert={showAlert}
-          onSignup={() => openAuth('signup')}
-        />
-      ) : page === 'privacy' ? (
-        <PrivacyPage onBack={() => goPage('menu')} />
-      ) : page === 'terms' ? (
-        <TermsPage onBack={() => goPage('menu')} />
-      ) : (
-        <LobbyPage
-          onPlay={() => goPage('play')}
-          onRule={() => goPage('rule')}
-          onSettings={() => goPage('settings')}
-        />
-      )}
+      {renderPage()}
 
       {isAuthModalOpen && (
         <AuthModal

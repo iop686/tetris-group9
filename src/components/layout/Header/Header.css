@@ -8,12 +8,13 @@ header {
   gap: 32px;
 }
 
-h1 {
+.logo-title {
   font-family: var(--font-orbitron);
   font-size: 1.5rem;
   font-weight: 900;
   letter-spacing: 0.2em;
   color: #ffffff;
+  cursor: pointer;
 }
 
 a {
@@ -33,7 +34,6 @@ a:hover { color: #ffffff; }
   margin-left: auto;
 }
 
-/* 아바타 */
 .avatar-wrap {
   display: flex;
   align-items: center;

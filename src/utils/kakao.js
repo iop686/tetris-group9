@@ -58,7 +58,7 @@ export function kakaoShareScore(score) {
     content: {
       title: 'TETRis 점수 자랑',
       description: `내 최고 점수는 ${score}점! 당신도 도전해보세요 🎮`,
-      imageUrl: `${siteUrl}/favicon.svg`,
+      imageUrl: 'https://t1.kakaocdn.net/kakaocorp/corp/service/Kakao_Logo.png',
       link: {
         mobileWebUrl: siteUrl,
         webUrl: siteUrl,

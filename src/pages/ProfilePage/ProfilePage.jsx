@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { storage } from '../../utils/storage';
 import './ProfilePage.css';
 
 // 비밀번호: 영문 + 숫자 필수, 8자 이상
@@ -13,7 +14,7 @@ function diceBearUrl(seed) {
   return `https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(seed)}`;
 }
 
-function ProfilePage({ currentUser, kakaoProfile, isGuest, onBack, showAlert, onSignup }) {
+function ProfilePage({ currentUser, kakaoProfile, isGuest, guestId, onBack, showAlert, onSignup }) {
   const [currentPw, setCurrentPw] = useState('');
   const [newPw, setNewPw] = useState('');
   const [newPw2, setNewPw2] = useState('');
@@ -24,7 +25,7 @@ function ProfilePage({ currentUser, kakaoProfile, isGuest, onBack, showAlert, on
   const handleChangePw = (e) => {
     e.preventDefault();
 
-    const savedPw = localStorage.getItem(`user_${currentUser}`);
+    const savedPw = storage.getUser(currentUser);
     if (savedPw === null) {
       showAlert('오류\n\n사용자 정보를 찾을 수 없습니다.');
       return;
@@ -47,7 +48,7 @@ function ProfilePage({ currentUser, kakaoProfile, isGuest, onBack, showAlert, on
       return;
     }
 
-    localStorage.setItem(`user_${currentUser}`, newPw);
+    storage.setUser(currentUser, newPw);
     showAlert('변경 완료\n\n비밀번호가 변경되었습니다.');
     setCurrentPw(''); setNewPw(''); setNewPw2('');
   };
@@ -64,12 +65,12 @@ function ProfilePage({ currentUser, kakaoProfile, isGuest, onBack, showAlert, on
           ) : (
             <img
               className="profile-avatar"
-              src={diceBearUrl(isGuest ? currentUser : currentUser)}
+              src={diceBearUrl(isGuest ? (guestId || 'guest') : currentUser)}
               alt="avatar"
             />
           )}
           <p className="profile-avatar-name">
-            {kakaoProfile ? kakaoProfile.nickname : currentUser}
+            {kakaoProfile ? kakaoProfile.nickname : (isGuest ? (guestId || 'GUEST') : currentUser)}
           </p>
         </div>
 

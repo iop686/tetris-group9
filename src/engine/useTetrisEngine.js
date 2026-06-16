@@ -1,9 +1,16 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { storage } from '../utils/storage';
 
 const COLS = 10;
 const ROWS = 20;
 const BLOCK_SIZE = 24;
 const NEXT_COUNT = 4;
+
+// 게임 속도 설정
+const INITIAL_DROP_INTERVAL = 1000;  // 시작 시 낙하 간격 (ms)
+const MIN_DROP_INTERVAL = 100;       // 최고 속도 한계
+const SPEED_UP_PER_LEVEL = 100;      // 레벨당 빨라지는 양
+const LINES_PER_LEVEL = 10;          // 레벨업 줄 수
 
 const SHAPES = {
   'I': [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]],
@@ -89,7 +96,7 @@ export default function useTetrisEngine(canvasRef, nextCanvasRefs, currentUser, 
 
   const lastTimeRef = useRef(0);
   const dropCounterRef = useRef(0);
-  const dropIntervalRef = useRef(1000);
+  const dropIntervalRef = useRef(INITIAL_DROP_INTERVAL);
   const rAFRef = useRef(null);
   const showGhostRef = useRef(showGhost);
   const showGridRef = useRef(showGrid);
@@ -99,13 +106,9 @@ export default function useTetrisEngine(canvasRef, nextCanvasRefs, currentUser, 
     showGridRef.current = showGrid;
   }, [showGhost, showGrid]);
 
-  // 최고기록 키
-  const highKey = () => (currentUser ? `tetris_high_${currentUser}` : 'tetris_high_guest');
-
   // 초기 최고기록 로드
   useEffect(() => {
-    const saved = localStorage.getItem(highKey());
-    setHighScore(saved ? parseInt(saved, 10) : 0);
+    setHighScore(storage.getHighScore(currentUser || 'guest'));
   }, [currentUser]);
 
   const draw = useCallback(() => {
@@ -173,10 +176,10 @@ export default function useTetrisEngine(canvasRef, nextCanvasRefs, currentUser, 
       gameOverRef.current = true;
       setGameOver(true);
       // 게임오버 시 최종 점수로 최고기록 갱신 + 경신 알림
-      const key = highKey();
-      const currentHigh = parseInt(localStorage.getItem(key) || '0', 10);
+      const userKey = currentUser || 'guest';
+      const currentHigh = storage.getHighScore(userKey);
       if (scoreRef.current > currentHigh) {
-        localStorage.setItem(key, scoreRef.current.toString());
+        storage.setHighScore(userKey, scoreRef.current);
         setHighScore(scoreRef.current);
         if (currentUser) showAlert(`축하합니다! 최고 기록 경신!\n\n새로운 최고 점수: ${scoreRef.current}점`);
       }
@@ -201,18 +204,21 @@ export default function useTetrisEngine(canvasRef, nextCanvasRefs, currentUser, 
       setScore(scoreRef.current);
 
       // 점수 오를 때마다 최고기록 실시간 저장
-      const key = highKey();
-      const currentHigh = parseInt(localStorage.getItem(key) || '0', 10);
+      const userKey = currentUser || 'guest';
+      const currentHigh = storage.getHighScore(userKey);
       if (scoreRef.current > currentHigh) {
-        localStorage.setItem(key, scoreRef.current.toString());
+        storage.setHighScore(userKey, scoreRef.current);
         setHighScore(scoreRef.current);
       }
 
       setLines(prev => {
         const nextLines = prev + clearedLines;
-        const nextLevel = Math.floor(nextLines / 10) + 1;
+        const nextLevel = Math.floor(nextLines / LINES_PER_LEVEL) + 1;
         setLevel(nextLevel);
-        dropIntervalRef.current = Math.max(100, 1000 - (nextLevel - 1) * 100);
+        dropIntervalRef.current = Math.max(
+          MIN_DROP_INTERVAL,
+          INITIAL_DROP_INTERVAL - (nextLevel - 1) * SPEED_UP_PER_LEVEL
+        );
         return nextLines;
       });
     }
@@ -293,7 +299,7 @@ export default function useTetrisEngine(canvasRef, nextCanvasRefs, currentUser, 
     setScore(0); setLines(0); setLevel(1);
     gameOverRef.current = false; isPausedRef.current = false;
     setGameOver(false); setIsPaused(false); setGameStarted(true);
-    dropIntervalRef.current = 1000;
+    dropIntervalRef.current = INITIAL_DROP_INTERVAL;
     playerRef.current.nextQueue = Array.from({ length: NEXT_COUNT }, () => randomPiece());
     playerRef.current.matrix = null;
     playerReset();

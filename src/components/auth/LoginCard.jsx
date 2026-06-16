@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { storage } from '../../utils/storage';
 
 function LoginCard({ onSwitch, onSuccess, showAlert }) {
   const [id, setId] = useState('');
@@ -10,7 +11,7 @@ function LoginCard({ onSwitch, onSuccess, showAlert }) {
       showAlert('로그인 실패\n\n아이디와 비밀번호를 모두 입력해주세요.');
       return;
     }
-    const savedPw = localStorage.getItem(`user_${id}`);
+    const savedPw = storage.getUser(id);
     if (savedPw === pw) {
       showAlert(`로그인 성공\n\n${id}님 환영합니다!`);
       onSuccess(id);

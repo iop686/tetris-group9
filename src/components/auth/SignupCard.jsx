@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { storage } from '../../utils/storage';
 
 // 비밀번호: 영문 + 숫자 필수, 8자 이상
 function isValidPassword(pw) {
@@ -34,11 +35,11 @@ function SignupCard({ onSwitch, showAlert }) {
       showAlert('회원가입 실패\n\n비밀번호가 일치하지 않습니다.');
       return;
     }
-    if (localStorage.getItem(`user_${id}`)) {
+    if (storage.getUser(id)) {
       showAlert('회원가입 실패\n\n이미 존재하는 아이디입니다.');
       return;
     }
-    localStorage.setItem(`user_${id}`, pw);
+    storage.setUser(id, pw);
     showAlert('회원가입 완료\n\n성공적으로 가입되었습니다.');
     onSwitch();
   };
