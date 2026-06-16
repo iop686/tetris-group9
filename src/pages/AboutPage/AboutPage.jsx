@@ -36,9 +36,9 @@ const TECH_STACKS = [
 ];
 
 const MEMBERS = [
-  { name: '이름', role: 'Frontend' },
-  { name: '이름', role: 'Frontend' },
-  { name: '이름', role: 'Frontend' },
+  { name: '노기화', role: 'Frontend' },
+  { name: '이승민', role: 'Frontend' },
+  { name: '박인영', role: 'Frontend' },
 ];
 
 const APIS = [
